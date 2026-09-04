@@ -1,6 +1,10 @@
 # SPARK: Input-Conditioned Sparse Activation Modulation for Frozen DiT-based Super-Resolution
 
-[![arXiv](https://img.shields.io/badge/arXiv-2609.03813-b31b1b.svg)](https://arxiv.org/abs/2609.03813)
+<p align="center">
+  <a href="https://arxiv.org/abs/2609.03813">
+    <img src="https://img.shields.io/badge/arXiv-2609.03813-b31b1b.svg" alt="arXiv">
+  </a>
+</p>
 
 SPARK improves the perceptual quality of DiT-based super-resolution models without
 touching their weights. It identifies the few channels that dominate the activation
