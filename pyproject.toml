@@ -1,0 +1,66 @@
+[project]
+name = "spark-sr"
+version = "1.0.0"
+description = "SPARK: Input-Conditioned Sparse Activation Modulation for Frozen DiT-based Super-Resolution (TSD-SR backbone)"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = { file = "LICENSE" }
+
+# Versions are pinned to the exact set the reported results were produced with.
+dependencies = [
+    "torch==2.2.2",
+    "torchvision==0.17.2",
+    "diffusers==0.29.1",
+    "transformers==4.49.0",
+    "accelerate==1.12.0",
+    "peft==0.15.0",
+    "loralib==0.1.2",
+    "pyiqa==0.1.15.post2",
+    "numpy==1.26.4",
+    "pillow==10.3.0",
+    "einops==0.8.2",
+    "safetensors==0.7.0",
+    "tqdm==4.67.3",
+    "pyyaml==6.0.3",
+    "scipy==1.17.1",
+    "timm==1.0.25",
+    "opencv-python-headless==4.11.0.86",
+    # peft's BaseTunerLayer imports pkg_resources, removed in setuptools >= 80.
+    "setuptools==65.5.0",
+]
+
+[tool.uv]
+# Two resolver hazards, both verified by installing from scratch:
+#  * pyiqa and torch 2.2.2 need numpy 1.26.4, while several transitive
+#    dependencies declare numpy>=2 -- force 1.26.4.
+#  * pyiqa pulls in `opencv-python`, whose latest release overlays the same
+#    `cv2/` package directory as `opencv-python-headless` at a different major
+#    version. The mismatch installs cleanly but leaves `import cv2` broken with
+#    "partially initialized module 'cv2' has no attribute
+#    'gapi_wip_gst_GStreamerPipeline'". Pin both distributions to one version
+#    built against numpy < 2.
+override-dependencies = [
+    "numpy==1.26.4",
+    "opencv-python==4.11.0.86",
+    "opencv-python-headless==4.11.0.86",
+]
+
+# torch 2.2.2 + cu121 wheels do not live on PyPI.
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu121" }
+torchvision = { index = "pytorch-cu121" }
+
+[tool.setuptools]
+py-modules = [
+    "train_adaln_predictor",
+    "infer_adaln_predictor_dataset",
+    "infer_tsdsr_baseline_dataset",
+]
+
+[tool.setuptools.packages.find]
+include = ["models*", "utils*"]
