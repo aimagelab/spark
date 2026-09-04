@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Standalone AdaLN predictor training (no test-time optimization/inference)."""
+"""Standalone AdaLN predictor training"""
 
 import json
 import os
